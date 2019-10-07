@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  morgue:
+    build: morgue
+    ports:
+      - "8686:80"
+    depends_on:
+      - morgue-db
+
+  morgue-db:
+    build: morgue-db
+    restart: always
+    volumes:
+      - morgue-db-data:/var/lib/mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_DATABASE: 'morgue'
+      MYSQL_USER: 'morgue'
+      MYSQL_PASSWORD: 'morgue_password'
+    networks:
+      default:
+        aliases:
+         - morgue.svc
+
+volumes:
+  morgue-db-data:
